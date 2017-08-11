@@ -3,6 +3,7 @@
 
 #include <amxmodx>
 #include <cstrike>
+#include <engine>
 #include <fakemeta>
 #include <hamsandwich>
 
@@ -13,9 +14,9 @@ enum
 }
 
 new const
-	PLUGIN_NAME    [] = "Checkpoints & Teleport",
+	PLUGIN_NAME    [] = "Advanced Checkpoints",
 	PLUGIN_VERSION    [] = "1.0",
-	PLUGIN_AUTHOR    [] = "Keys"
+	PLUGIN_AUTHOR    [] = "Andrew"
 
 new bool:g_bHasCheckpoint[33];
 
@@ -23,6 +24,7 @@ new Float:g_bCheckpointOrigin[33][3];
 new Float:g_bCheckpointAngle[33][3];
 new Float:g_bCheckpointGravity[33][3];
 new Float:g_bCheckpointVelocity[33][3];
+new Float:g_bBoostDir[33][3];
 
 new g_iDemNo[33][2];
 
@@ -34,9 +36,12 @@ new const Float:VEC_NULL[3] = {0.0, 0.0, 0.0}
 public plugin_init() {
 	register_plugin(PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_AUTHOR)
 
-	register_clcmd("say /teleport", "gocheckpoint");
-	register_clcmd("say /checkpoints", "checkpoint_menu");
-	register_clcmd("say /sm","checkpoint_menu");
+	register_clcmd("acm","checkpoint_menu");
+	register_clcmd("boost","boost`");
+}
+public plugin_modules(){
+	require_module("Engine");
+	require_module("FakeMeta");
 }
 public client_connect(id) {
 	g_bHasCheckpoint[id] = false;
@@ -48,7 +53,7 @@ public checkpoint_menu(id){
 
 	menu_additem(menu, "Save Checkpoint", "", 0);
 	menu_additem(menu, "Teleport", "", 0);
-	menu_additem(menu, "Delete Checkpoint", "", 0);
+	//menu_additem(menu, "Delete Checkpoint", "", 0);
 
 	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
 	menu_display(id, menu, 0);
@@ -71,9 +76,21 @@ public menu_handler(id, menu, item){
 	{
 		case 0:SaveCheckpoint(id)
 		case 1:fwTeleport(id)
-		case 2:RemoveCheckpoint(id)
+		//case 2:RemoveCheckpoint(id)
 	}
 	menu_display(id, menu, 0);
+	return PLUGIN_HANDLED;
+}
+
+public boost(id){
+	if(!is_user_alive(id)) return PLUGIN_HANDLED;
+	new Float:returnV[3], Float:Original[3]
+
+	VelocityByAim ( id, 2000, returnV )
+	pev(id,pev_velocity,Original)
+	returnV[2] = Original[2]
+	
+	set_pev(id,pev_velocity,returnV)
 	return PLUGIN_HANDLED;
 }
 
@@ -93,6 +110,8 @@ public gocheckpoint(id){
 		fwTeleport(id);
 	}
 	return PLUGIN_HANDLED;
+	
+	
 }
 
 public SaveCheckpoint(id){
@@ -162,3 +181,6 @@ set_checkpoint(id, Float:flOrigin[3], Float:flAngles[3], Float:flVelocity[3]) {
 
 	set_pev(id, pev_fuser2, 0.0)
 }
+/* AMXX-Studio Notes - DO NOT MODIFY BELOW HERE
+*{\\ rtf1\\ ansi\\ deff0{\\ fonttbl{\\ f0\\ fnil Tahoma;}}\n\\ viewkind4\\ uc1\\ pard\\ lang1049\\ f0\\ fs16 \n\\ par }
+*/
