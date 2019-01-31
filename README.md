@@ -1,9 +1,13 @@
 ### Description
-Plugin for Counter-Strike 1.6 can save your position, speed, rotation and resume them. Also speed boosting. I use plugin to create TAS videos.
+Checkpoint system for making TAS.
 
 ### Usage
-Open menu 
-1. chat command - '/acm'
-2. console command - 'acm'
+console commands:
+**tas** - opens menu
+**boost** - boosting player
 
-'bind v boost' - in console for get 2000 speed by pressing V on keyboard
+cvars:
+**boost_speed 2000** - controls boost speed
+
+useful binds:
+**bind v boost**
