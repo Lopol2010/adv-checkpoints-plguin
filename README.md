@@ -2,12 +2,12 @@
 Checkpoint system for making TAS.
 
 ### Usage
-console commands:
-**tas** - opens menu
-**boost** - boosting player
+console commands:  
+**tas** - opens menu  
+**boost** - boosting player  
 
-cvars:
-**boost_speed 2000** - controls boost speed
+cvars:  
+**boost_speed 2000** - controls boost speed  
 
-useful binds:
+useful binds:  
 **bind v boost**
